@@ -12,13 +12,14 @@ const styles = StyleSheet.create({
         resizeMode: "contain" //maintain proportion of image when resizing
     },
     title: {
+        fontFamily: 'Poppins_400Regular',
         color: '#FFF',
         fontSize: 20,
         lineHeight: 30,
         marginTop: 80,
     },
     titleBold: {
-        fontWeight: "bold",
+        fontFamily: 'Poppins_600SemiBold',
     }
 })
 
