@@ -31,7 +31,7 @@ function TeacherList()
                     console.log("Getting favorites from storage")
                     console.log(favoritesFromStorage)
                     setFavorites(favoritesFromStorage)
-                    setTeacherItems(favoritesFromStorage)
+                    //setTeacherItems(favoritesFromStorage)
                 }
             })
     }, [])
