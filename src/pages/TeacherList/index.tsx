@@ -25,7 +25,7 @@ function TeacherList()
         AsyncStorage.getItem('favorites')
             .then(response => 
             {
-                if (!response)
+                if (response)
                 {
                     const favoritesFromStorage = JSON.parse(response as string)
                     console.log("Getting favorites from storage")
