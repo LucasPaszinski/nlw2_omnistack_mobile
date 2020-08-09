@@ -10,7 +10,7 @@ function Favorites()
 {
     return (
         <View style={styles.container}>
-            <PageHeader title={"Proffys disponíveis"} />
+            <PageHeader title={"Seus Proffys Favoritos"} />
             <ScrollView
                 style={styles.teacherList}
                 contentContainerStyle={
@@ -20,11 +20,6 @@ function Favorites()
                     }
                 }
             >
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
             </ScrollView>
         </View>
 

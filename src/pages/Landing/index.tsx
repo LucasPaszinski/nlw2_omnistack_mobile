@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Image } from 'react-native'
 import styles from './styles'
 
@@ -10,10 +10,20 @@ import heartIcon from '../../assets/images/icons/heart.png'
 import { useNavigation } from '@react-navigation/native'
 
 import { RectButton } from 'react-native-gesture-handler'
+import api from '../../services/api'
 
 function Landing()
 {
-    const [ totalConnections, setTotalConnection ] = useState(200);
+    const [ totalConnections, setTotalConnection ] = useState(0);
+
+    useEffect(() =>
+    {
+        const response = api.get('connections')
+            .then((response) =>
+            {  
+                setTotalConnection(response.data.total)
+            })
+    }, [])
 
     const { navigate } = useNavigation();
 
