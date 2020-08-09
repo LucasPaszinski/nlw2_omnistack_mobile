@@ -1,5 +1,10 @@
 import { StyleSheet } from 'react-native'
 
+// Archivo_400Regular,
+// Archivo_700Bold,
+// Poppins_400Regular,
+// Poppins_600SemiBold
+
 const styles = StyleSheet.create({
     container: {
         flex: 1, // Ocupy all screen
@@ -29,7 +34,6 @@ const styles = StyleSheet.create({
     button: {
         width: '48%',
         height: 150,
-        backgroundColor: '#333',
         borderRadius: 8,
         padding: 24,
         justifyContent: 'space-between',
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     totalConnections: {
-        fontFamily: 'Poppings_400Regular',
+        fontFamily: 'Poppins_400Regular',
         color: '#d4c2ff',
         fontSize: 12,
         lineHeight: 20,
