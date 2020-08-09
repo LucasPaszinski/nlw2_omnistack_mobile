@@ -7,6 +7,7 @@ import hearthOutlineIcon from '../../assets/images/icons/heart-outline.png'
 import unfavoriteIcon from '../../assets/images/icons/unfavorite.png'
 import whatsappIcon from '../../assets/images/icons/whatsapp.png'
 import AsyncStorage from '@react-native-community/async-storage'
+import api from '../../services/api'
 
 
 export interface Teacher
@@ -103,7 +104,11 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited }) =>
 
                     < RectButton
                         style={styles.buttonContact}
-                        onPress={() => Linking.openURL(`whatsapp://send?phone=${teacherItem.whatsapp}`)}
+                        onPress={() =>
+                        {
+                            api.post('connections', {user_id: teacherItem.user_id})
+                            Linking.openURL(`whatsapp://send?phone=${teacherItem.whatsapp}`)
+                        }}
                     >
                         <Image source={whatsappIcon} />
                         <Text style={styles.buttonContactText}>
