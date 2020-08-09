@@ -6,6 +6,7 @@ import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/popp
 
 
 import { AppLoading } from 'expo'
+import AppStack from './src/routes/AppStack'
 
 // <> </> is a fragment, does not create extra html 
 
@@ -28,7 +29,7 @@ export default function App()
     return (
       <>
         <StatusBar style='light' />
-        <Landing />
+        <AppStack />
       </>
     )
   }
