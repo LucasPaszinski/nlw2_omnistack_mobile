@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, Linking } from 'react-native'
+import { View, Text, Image, Linking, KeyboardAvoidingView } from 'react-native'
 import styles from './styles'
 import { RectButton } from 'react-native-gesture-handler'
 
@@ -25,10 +25,11 @@ export interface Teacher
 interface TeacherItemProps
 {
     teacherItem: Teacher,
-    favorited: boolean
+    favorited: boolean,
+    updateCallbackOnFavoriteChange?: () => void
 }
 
-const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited }) =>
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited, updateCallbackOnFavoriteChange }) =>
 {
     const [ favorite, setFavorite ] = useState(favorited);
 
@@ -55,10 +56,13 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited }) =>
             await AsyncStorage.setItem('favorites', JSON.stringify(favoritesArray))
             setFavorite(true)
         }
+
+        if (updateCallbackOnFavoriteChange)
+            updateCallbackOnFavoriteChange()
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
             <View style={styles.profile}>
                 <Image
                     source={{ uri: teacherItem.avatar }}
@@ -106,7 +110,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited }) =>
                         style={styles.buttonContact}
                         onPress={() =>
                         {
-                            api.post('connections', {user_id: teacherItem.user_id})
+                            api.post('connections', { user_id: teacherItem.user_id })
                             Linking.openURL(`whatsapp://send?phone=${teacherItem.whatsapp}`)
                         }}
                     >
@@ -117,7 +121,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacherItem, favorited }) =>
                     </RectButton>
                 </View>
             </View>
-        </View >
+        </KeyboardAvoidingView>
 
     )
 }

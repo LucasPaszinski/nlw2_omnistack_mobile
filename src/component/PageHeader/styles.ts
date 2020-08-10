@@ -7,8 +7,9 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     container: {
-        padding: 40,
-        backgroundColor: '#8257e5'
+        padding: 20,
+        backgroundColor: '#8257e5',
+        justifyContent: "flex-end"
     },
     topBar: {
         flexDirection: 'row',
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    }
+    },
 })
 
 export default styles;

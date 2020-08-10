@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import styles from './styles'
 import PageHeader from '../../component/PageHeader';
@@ -12,7 +12,14 @@ function Favorites()
 {
     const [ favorites, setFavorites ] = useState<Teacher[]>([])
 
-    useFocusEffect(() =>
+    useFocusEffect(React.useCallback(() =>
+    {
+        loadFavorites();
+    }, []))
+
+    useEffect(() => { loadFavorites() }, [])
+
+    function loadFavorites()
     {
         AsyncStorage.getItem('favorites')
             .then(response => 
@@ -20,23 +27,9 @@ function Favorites()
                 if (response)
                 {
                     const favoritesFromStorage = JSON.parse(response as string)
-                    console.log("Getting favorites from storage")
-                    console.log(favoritesFromStorage)
                     setFavorites(favoritesFromStorage)
                 }
             })
-    })
-
-    function setTeachers(teacher: Teacher): boolean
-    {
-        if (favorites)
-        {
-            const any = favorites.some((t: Teacher) => t.id == teacher.id)
-            console.log(favorites)
-            console.log(any)
-            return any
-        }
-        return false
     }
 
     return (
@@ -58,7 +51,8 @@ function Favorites()
                             <TeacherItem
                                 key={teacher.id}
                                 teacherItem={teacher}
-                                favorited={() => setTeachers(teacher)}
+                                favorited={((favorites) ? favorites.some((t: Teacher) => t.id == teacher.id) : false)}
+                                updateCallbackOnFavoriteChange={loadFavorites}
                             />)
                     }
                 )}

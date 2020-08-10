@@ -14,7 +14,9 @@ const styles = StyleSheet.create({
         marginTop: -40,
     },
     searchForm: {
-        marginBottom: 8,
+        marginBottom: 30,
+    },
+    avoidView: {
     },
     label: {
         color: '#d4c2ff',
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
         height: 54,
         backgroundColor: '#FFF',
         borderRadius: 8,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         paddingHorizontal: 16,
         marginTop: 4,
         marginBottom: 16,

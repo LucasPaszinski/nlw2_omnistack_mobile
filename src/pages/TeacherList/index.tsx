@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, Linking } from 'react-native'
+import { View, Text, Platform, KeyboardAvoidingView } from 'react-native'
 import styles from './styles'
 import PageHeader from '../../component/PageHeader';
 import TeacherItem, { Teacher } from '../../component/TeacherItem';
@@ -7,6 +7,7 @@ import { ScrollView, TextInput, BorderlessButton, RectButton } from 'react-nativ
 import { Feather } from '@expo/vector-icons'
 import api from '../../services/api'
 import AsyncStorage from "@react-native-community/async-storage";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 function TeacherList()
@@ -20,7 +21,12 @@ function TeacherList()
     const [ teacherItems, setTeacherItems ] = useState<Teacher[]>([])
     const [ favorites, setFavorites ] = useState<Teacher[]>([])
 
-    useEffect(() =>
+    useFocusEffect(React.useCallback(() =>
+    {
+        loadFavorites();
+    }, []))
+
+    function loadFavorites()
     {
         AsyncStorage.getItem('favorites')
             .then(response => 
@@ -28,24 +34,13 @@ function TeacherList()
                 if (response)
                 {
                     const favoritesFromStorage = JSON.parse(response as string)
-                    console.log("Getting favorites from storage")
-                    console.log(favoritesFromStorage)
                     setFavorites(favoritesFromStorage)
-                    //setTeacherItems(favoritesFromStorage)
+                    const old = teacherItems
+                    setTeacherItems([])
+                    setTeacherItems(old)
                 }
             })
-    }, [])
-
-    function setTeachers(teacher: Teacher): boolean
-    {
-        if (favorites)
-        {
-            const any = favorites.some((t: Teacher) => t.id == teacher.id)
-            console.log(favorites)
-            console.log(any)
-            return any
-        }
-        return false
+        // Force a redraw on screen, don't use this if possible
     }
 
     async function SearchTeachers()
@@ -57,7 +52,6 @@ function TeacherList()
                 time
             }
         })
-        console.log(response.data)
         setTeacherItems(response.data)
         setFilterVisible(false)
     }
@@ -77,42 +71,48 @@ function TeacherList()
             }>
                 {filterVisible && (
                     <View style={styles.searchForm}>
-                        <Text style={styles.label}>
-                            Matérial
-                        </Text>
-                        <TextInput
-                            placeholderTextColor={'#c1bccc'}
-                            style={styles.input}
-                            placeholder={'Qual a matéria ?'}
-                            value={subject}
-                            onChangeText={setSubject}
-                        />
-                        <View style={styles.inputGroup}>
-                            <View style={styles.inputBlock}>
-                                <Text style={styles.label}>
-                                    Dia da Semana
+
+                        <KeyboardAvoidingView
+                            behavior={Platform.OS == "ios" ? "padding" : "height"}
+                            style={styles.avoidView}
+                        >
+                            <Text style={styles.label}>
+                                Matérial
+                            </Text>
+                            <TextInput
+                                placeholderTextColor={'#c1bccc'}
+                                style={styles.input}
+                                placeholder={'Qual a matéria ?'}
+                                value={subject}
+                                onChangeText={setSubject}
+                            />
+                            <View style={styles.inputGroup}>
+                                <View style={styles.inputBlock}>
+                                    <Text style={styles.label}>
+                                        Dia da Semana
                                 </Text>
-                                <TextInput
-                                    placeholderTextColor={'#c1bccc'}
-                                    style={styles.input}
-                                    placeholder={'Qual o dia ?'}
-                                    value={week_day}
-                                    onChangeText={setWeekDay}
-                                />
-                            </View>
-                            <View style={styles.inputBlock}>
-                                <Text style={styles.label}>
-                                    Matérial
+                                    <TextInput
+                                        placeholderTextColor={'#c1bccc'}
+                                        style={styles.input}
+                                        placeholder={'Qual o dia ?'}
+                                        value={week_day}
+                                        onChangeText={setWeekDay}
+                                    />
+                                </View>
+                                <View style={styles.inputBlock}>
+                                    <Text style={styles.label}>
+                                        Horário
                                 </Text>
-                                <TextInput
-                                    placeholderTextColor={'#c1bccc'}
-                                    style={styles.input}
-                                    placeholder={'Qual Horário ?'}
-                                    value={time}
-                                    onChangeText={setTime}
-                                />
+                                    <TextInput
+                                        placeholderTextColor={'#c1bccc'}
+                                        style={styles.input}
+                                        placeholder={'Qual Horário ?'}
+                                        value={time}
+                                        onChangeText={setTime}
+                                    />
+                                </View>
                             </View>
-                        </View>
+                        </KeyboardAvoidingView>
 
                         <RectButton
                             style={styles.searchButton}
@@ -147,7 +147,8 @@ function TeacherList()
                             <TeacherItem
                                 key={teacher.id}
                                 teacherItem={teacher}
-                                favorited={() => setTeachers(teacher)}
+                                favorited={((favorites) ? favorites.some((t: Teacher) => t.id == teacher.id) : false)}
+                                updateCallbackOnFavoriteChange={loadFavorites}
                             />)
                     }
                 )}

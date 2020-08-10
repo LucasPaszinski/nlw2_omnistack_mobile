@@ -20,10 +20,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight })
     return (
         <View style={styles.container}>
             <View style={styles.topBar}>
-                <BorderlessButton
-                    onPress={() => navigate('Landing')}
-
-                >
+                <BorderlessButton onPress={() => navigate('Landing')}>
                     <Image
                         source={backIcon}
                         resizeMode="contain"
@@ -40,9 +37,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight })
                 </Text>
                 {headerRight}
             </View>
-            {children}
-        </View>
-
+            { children }
+        </View >
     )
 }
 
